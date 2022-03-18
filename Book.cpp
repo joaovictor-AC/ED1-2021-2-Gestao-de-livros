@@ -10,6 +10,7 @@ struct b {
 	int pages;
 	char *author;
 	char *date_release;
+	int reserved;
 };
 
 Book* newBook(int id, char *title, char *publisher, int pages, char *author, char *date_release) {
@@ -20,6 +21,7 @@ Book* newBook(int id, char *title, char *publisher, int pages, char *author, cha
 	b->pages = pages;
 	b->author = author;
 	b->date_release = date_release;
+	b->reserved = 0;
 	
 	return b;
 }
@@ -67,4 +69,12 @@ char* getBookDate(Book *b) {
 }
 void setBookDate(Book *b, char *date_realease) {
 	b->date_release = date_realease;
+}
+
+int isBookReserved(Book *b) {
+	return b->reserved;
+}
+
+void setBookReserved(Book *b, int reserved) {
+	b->reserved = reserved;
 }

@@ -5,7 +5,9 @@
 int main() {
 	
 	Book *b = newBook(145, "Harry Potter", "Abril", 278, "J.K Rowling", 23/02/98);
-	printf("#%d-%s\n",getBookId(b),getBookTitle(b));
+	printf("%d\n", isBookReserved(b));
+	setBookReserved(b, 1);
+	printf("%d\n", isBookReserved(b));
 	free(b);
 	
 }

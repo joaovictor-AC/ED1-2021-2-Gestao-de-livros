@@ -20,3 +20,5 @@ void setBookAuthor(Book *b, char *author);
 char* getBookDate(Book *b);
 void setBookDate(Book *b, char *date_realease);
 
+int isBookReserved(Book *b);
+void setBookReserved(Book *b, int reserved);
