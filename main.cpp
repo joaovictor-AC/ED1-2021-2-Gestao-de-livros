@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "Book.h"
 #include "Client.h"
+#include "Reservation.h"
 
 int main() {
 	
@@ -12,5 +13,10 @@ int main() {
 	
 	Client *c = newClient("Joao Victor", 19, 'M', "702.492.811.55", "28/04/2002");
 	printf("%s\n", getClientName(c));
+	
+	Reservation *r = newReservation("18/03/2022", c, b);
+	Client *c1 = getReservationClient(r);
+	Book *b1 = getReservationBook(r);
+	printf("%s-%s-%s\n", getClientName(c1), getBookTitle(b1), getReservationDate(r));
 	
 }
