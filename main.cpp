@@ -3,6 +3,7 @@
 #include "Book.h"
 #include "Client.h"
 #include "Reservation.h"
+#include "ClientBookList.h"
 
 int main() {
 	
@@ -19,4 +20,14 @@ int main() {
 	Book *b1 = getReservationBook(r);
 	printf("%s-%s-%s\n", getClientName(c1), getBookTitle(b1), getReservationDate(r));
 	
+	ClientBookList *cbl = cbl_open();
+	addBook(cbl, b);
+	addBook(cbl, b);
+	addBook(cbl, b);
+	addBook(cbl, b);
+	addBook(cbl, b);
+	
+	print(cbl);
+	
+		
 }
