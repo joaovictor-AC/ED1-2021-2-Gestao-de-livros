@@ -14,6 +14,10 @@ struct c {
 
 Client* newClient(char *name, int age, char sex, char *cpf, char *birth_date) {
 	Client *c = (Client*) malloc(sizeof(Client));
+	if (c == NULL) {
+		printf("Erro -- Unable to allocate memory");
+		return NULL;
+	}
 	c->name = name;
 	c->age = age;
 	c->sex = sex;
