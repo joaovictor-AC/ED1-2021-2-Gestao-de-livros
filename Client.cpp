@@ -59,3 +59,10 @@ void setClientDate(Client *c, char* birth_date) {
 	c->birth_date = birth_date;
 }
 
+ClientBookList* getClientBookList(Client *c) {
+	return c->bookList;
+}
+void setClientBookList(Client *c, ClientBookList *cbl) {
+	c->bookList = cbl;
+}
+

@@ -20,14 +20,15 @@ int main() {
 	Book *b1 = getReservationBook(r);
 	printf("%s-%s-%s\n", getClientName(c1), getBookTitle(b1), getReservationDate(r));
 	
-	ClientBookList *cbl = cbl_open();
-	addBook(cbl, b);
-	addBook(cbl, b);
-	addBook(cbl, b);
-	addBook(cbl, b);
-	addBook(cbl, b);
+	addBook(getClientBookList(c), b);
+	addBook(getClientBookList(c), b);
+	addBook(getClientBookList(c), b);
+	addBook(getClientBookList(c), b);
+	addBook(getClientBookList(c), b);
 	
-	print(cbl);
+	
+	
+	print(getClientBookList(c));
 	
 		
 }

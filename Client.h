@@ -19,6 +19,5 @@ void setClientCpf(Client *c, char* cpf);
 char* getClientDate(Client *c);
 void setClientDate(Client *c, char* birth_date);
 
-/*Possível alteração:
-- Colocar uma estruta de dados para os livros que um cliente reservou
-*/
+ClientBookList* getClientBookList(Client *c);
+void setClientBookList(Client *c, ClientBookList *cbl);
