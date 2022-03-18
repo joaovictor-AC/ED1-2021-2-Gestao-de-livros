@@ -1,3 +1,5 @@
+#include "ClientBookList.h"
+
 typedef struct c Client;
 
 Client* newClient(char *name, int age, char sex, char *cpf, char *birth_date);

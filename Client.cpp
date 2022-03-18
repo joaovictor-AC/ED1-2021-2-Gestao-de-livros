@@ -8,6 +8,8 @@ struct c {
 	char sex;
 	char *cpf;
 	char *birth_date;
+	ClientBookList *bookList;
+	
 };
 
 Client* newClient(char *name, int age, char sex, char *cpf, char *birth_date) {
@@ -17,6 +19,7 @@ Client* newClient(char *name, int age, char sex, char *cpf, char *birth_date) {
 	c->sex = sex;
 	c->cpf = cpf;
 	c->birth_date = birth_date;
+	c->bookList = cbl_open();
 	
 	return c;
 }
