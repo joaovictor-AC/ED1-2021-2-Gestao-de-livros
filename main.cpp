@@ -4,29 +4,63 @@
 #include "Client.h"
 #include "Reservation.h"
 #include "ClientBookList.h"
+#include "ClientList.h"
 
 int main() {
+	int ans;
 	
-	Book *b = newBook(145, "Harry Potter", "Abril", 278, "J.K Rowling", 23/02/98);
-	setBookReserved(b, 1);
-	
-	Client *c = newClient("Joao Victor", 19, 'M', "702.492.811.55", "28/04/2002");
-	
-	Reservation *r = newReservation("18/03/2022", c, b);
-	Client *c1 = getReservationClient(r);
-	Book *b1 = getReservationBook(r);
-	
-	Book *b2 = newBook(145, "Senhor dos Aneis", "Abril", 278, "J.K Rowling", 23/02/98);
+	printf("1 - Lista de clientes\n");
+	printf("2 - Lista de livros\n");
+	printf("3 - Lista de reservas\n");
+	printf("4 - Receber livro\n");
+	printf("0 - Sair\n");
 
-	addBook(getClientBookList(c), b);
-	addBook(getClientBookList(c), b);
-	addBook(getClientBookList(c), b);
-	addBook(getClientBookList(c), b);
-	addBook(getClientBookList(c), b2);
-	removeBook(getClientBookList(c), 1);
+	scanf("%d", &ans);
 	
-	
-	print(getClientBookList(c));
-	
-		
+	switch (ans) {
+		case 1:
+			system("cls");
+			printf("1 - Listar todos os clientes\n");
+			printf("2 - Consultar cliente\n");
+			printf("3 - Criar Cliente\n");
+			printf("4 - Remover Cliente\n");
+			printf("0 - Voltar\n");
+			
+			scanf("%d", &ans);
+			
+			switch (ans) {
+				case 1:
+					
+					break;
+				
+				case 2:
+					break;
+			
+				case 3:
+					break;
+			
+				case 4:
+					break;
+			
+				default:
+					break;
+			}
+			
+			break;
+			
+		case 2:
+			break;
+			
+		case 3:
+			break;
+			
+		case 4:
+			break;
+			
+		case 0:
+			break;
+			
+		default:
+			break;
+	}		
 }

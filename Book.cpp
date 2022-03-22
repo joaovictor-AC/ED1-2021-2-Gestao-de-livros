@@ -15,6 +15,10 @@ struct b {
 
 Book* newBook(int id, char *title, char *publisher, int pages, char *author, char *date_release) {
 	Book *b = (Book*) malloc(sizeof(Book));
+	if (b == NULL) {
+		printf("Erro -- Unable to allocate memory");
+		return NULL;
+	}
 	b->id = id;
 	b->title = title;
 	b->publisher = publisher;
