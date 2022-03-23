@@ -40,15 +40,21 @@ void cl_close(ClientList *cl) {
 int addClient(ClientList *cl, Client *c) {
 	if (cl == NULL) return 0;
 	Node *node_aux = cl->head;
+	
 	Node *node = (Node*) malloc(sizeof(Node));
 	node->c = c;
 	node->prox = NULL;
 	
-	while (node_aux != NULL)
+	if (node_aux == NULL) {	
+		node_aux = node;
+		cl->head = node_aux;
+	} else {
+	while (node_aux->prox != NULL)
 		node_aux = node_aux->prox;
-		
 	node_aux->prox = node;
+	}
 	
+	cl->index++;
 	return 1;
 }
 
@@ -77,11 +83,52 @@ int removeClient(ClientList *cl, char *client_cpf) {
 	return 1;
 }
 
+Client* getClient(ClientList *cl) {
+	int ans;
+	Node *node = cl->head;
+	
+	printf("Buscar cliente por:\n");
+	printf("1 - CPF\n");
+	printf("2 - id\n");
+	printf("0 - Voltar\n");
+
+	scanf("%d", &ans);
+	
+	switch (ans) {
+		case 1:
+			char str[11];
+			printf("Digite o CPF do cliente: ");
+			scanf("%s", &str);
+			
+			while (node != NULL && strcmp(str, getClientCpf(node->c)) != 0)
+				node = node->prox;
+				
+			if (node == NULL)
+				printf("Cliente nao encontrado\n");
+			else
+				printClient(node->c);
+			break;
+		
+		case 2:
+			int id;
+			printf("Digite o CPF do cliente: ");
+			scanf("%d", &id);
+			
+			while (node != NULL || id != getClientId(node->c))
+				node = node->prox;
+				
+			if (node == NULL)
+				printf("Cliente nao encontrado\n");
+			else
+				printClient(node->c);
+			break;
+	}
+}
+
 void printAllClients(ClientList *cl) {
 	Node *node_aux = cl->head;
-	Client *c = node_aux->c;
 	while (node_aux != NULL) {
-		printf("%s - %d anos - %c - %s - %s\n", getClientName(c), getClientAge(c), getClienSex(c), getClientCpf(c), getClientDate(c));
+		printf("%s - %d anos - %c - %s - %s\n", getClientName(node_aux->c), getClientAge(node_aux->c), getClienSex(node_aux->c), getClientCpf(node_aux->c), getClientDate(node_aux->c));
 		node_aux = node_aux->prox;
 	}
 }

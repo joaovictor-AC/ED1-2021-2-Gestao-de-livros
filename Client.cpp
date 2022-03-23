@@ -3,6 +3,7 @@
 #include "Client.h"
 
 struct c {
+	int id;
 	char *name;
 	int age;
 	char sex;
@@ -59,6 +60,15 @@ void setClientCpf(Client *c, char* cpf) {
 char* getClientDate(Client *c) {
 	return c->birth_date;
 }
+
+int getClientId(Client *c) {
+	return c->id;
+}
+
+void setClientId(Client *c, int id) {
+	c->id = id;
+}
+
 void setClientDate(Client *c, char* birth_date) {
 	c->birth_date = birth_date;
 }
@@ -68,5 +78,14 @@ ClientBookList* getClientBookList(Client *c) {
 }
 void setClientBookList(Client *c, ClientBookList *cbl) {
 	c->bookList = cbl;
+}
+
+void printClient(Client *c) {
+	printf("Nome: %s\n", getClientName(c));
+	printf("CPF: %s\n", getClientCpf(c));
+	printf("Idade: %d anos\n", getClientAge(c));
+	printf("Sexo: %s\n", (getClienSex(c) == 'M') ? "Masculino" : "Feminino");
+	printf("Data de nascimento: %s\n", getClientDate(c));
+	// Colocar depois a lisra de livros reservados
 }
 
