@@ -8,5 +8,5 @@ void cl_close(ClientList *cl);
 int addClient(ClientList *cl, Client *c);
 int removeClient(ClientList *cl, char *client_cpf);
 
-Client* getClient(ClientList *cl);
+int getClient(ClientList *cl,  char *client_cpf);
 void printAllClients(ClientList *cl);

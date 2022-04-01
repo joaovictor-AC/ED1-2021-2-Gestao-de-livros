@@ -62,15 +62,13 @@ int removeClient(ClientList *cl, char *client_cpf) {
 	if (cl == NULL || cl->head == NULL) return 0;
 	Node *node_ant, *node_aux = cl->head;
 	
-	while (node_aux != NULL || strcmp(getClientCpf(node_aux->c), client_cpf) != 0) {
+	while (node_aux != NULL && strcmp(getClientCpf(node_aux->c), client_cpf) != 0) {
 		node_ant = node_aux;	
 		node_aux = node_aux->prox;
 	}
 		
-	if (node_aux == NULL){
-		printf("Erro -- Cliente nao encontrado.\n");
+	if (node_aux == NULL)
 		return 0;
-	}
 	
 	if (node_aux == cl->head)
 		cl->head = node_aux->prox;
@@ -83,54 +81,40 @@ int removeClient(ClientList *cl, char *client_cpf) {
 	return 1;
 }
 
-Client* getClient(ClientList *cl) {
-	int ans;
+int getClient(ClientList *cl,  char *client_cpf) {
 	Node *node = cl->head;
-	
-	printf("Buscar cliente por:\n");
-	printf("1 - CPF\n");
-	printf("2 - id\n");
-	printf("0 - Voltar\n");
-
-	scanf("%d", &ans);
-	
-	switch (ans) {
-		case 1:
-			char str[11];
-			printf("Digite o CPF do cliente: ");
-			scanf("%s", &str);
 			
-			while (node != NULL && strcmp(str, getClientCpf(node->c)) != 0)
-				node = node->prox;
+	while (node != NULL && strcmp(client_cpf, getClientCpf(node->c)) != 0)
+		node = node->prox;
 				
-			if (node == NULL)
-				printf("Cliente nao encontrado\n");
-			else
-				printClient(node->c);
-			break;
-		
-		case 2:
-			int id;
-			printf("Digite o CPF do cliente: ");
-			scanf("%d", &id);
-			
-			while (node != NULL || id != getClientId(node->c))
-				node = node->prox;
-				
-			if (node == NULL)
-				printf("Cliente nao encontrado\n");
-			else
-				printClient(node->c);
-			break;
-	}
+	if (node == NULL)
+		return 0;
+	else
+		printClient(node->c);
+	
+	return 1;
+	
 }
 
 void printAllClients(ClientList *cl) {
 	Node *node_aux = cl->head;
+	int i = 1;
 	while (node_aux != NULL) {
-		printf("%s - %d anos - %c - %s - %s\n", getClientName(node_aux->c), getClientAge(node_aux->c), getClienSex(node_aux->c), getClientCpf(node_aux->c), getClientDate(node_aux->c));
+		printf("#%d\n", i);
+		printClient(node_aux->c);
+		printf("\n");
 		node_aux = node_aux->prox;
+		i++;
 	}
 }
+
+
+
+
+
+
+
+
+
 
 

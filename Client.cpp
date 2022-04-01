@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <ctype.h>
 #include "Client.h"
 
 struct c {
-	int id;
 	char *name;
 	int age;
 	char sex;
@@ -21,7 +21,7 @@ Client* newClient(char *name, int age, char sex, char *cpf, char *birth_date) {
 	}
 	c->name = name;
 	c->age = age;
-	c->sex = sex;
+	c->sex = toupper(sex);
 	c->cpf = cpf;
 	c->birth_date = birth_date;
 	c->bookList = cbl_open();
@@ -59,14 +59,6 @@ void setClientCpf(Client *c, char* cpf) {
 
 char* getClientDate(Client *c) {
 	return c->birth_date;
-}
-
-int getClientId(Client *c) {
-	return c->id;
-}
-
-void setClientId(Client *c, int id) {
-	c->id = id;
 }
 
 void setClientDate(Client *c, char* birth_date) {

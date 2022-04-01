@@ -19,9 +19,6 @@ void setClientCpf(Client *c, char* cpf);
 char* getClientDate(Client *c);
 void setClientDate(Client *c, char* birth_date);
 
-int getClientId(Client *c);
-void setClientId(Client *c, int id);
-
 ClientBookList* getClientBookList(Client *c);
 void setClientBookList(Client *c, ClientBookList *cbl);
 
