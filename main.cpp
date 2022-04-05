@@ -7,19 +7,36 @@
 #include "Reservation.h"
 #include "ClientBookList.h"
 #include "ClientList.h"
+#include "BookList.h"
 
 int main() {
-		
 	Client *c1 = newClient("Joao", 19, 'M', "70249281155", "28/04/2002");
 	Client *c2 = newClient("Matheus", 19, 'M', "70249281154", "28/04/2002");
 	Client *c3 = newClient("Joana", 19, 'M', "70249281153", "28/04/2002");
 	ClientList *cl = cl_open();
+
+	BookList *bl = bl_open();
+
+	Book *b1 = newBook("Harry Potter", "ABC", 190, "JK Rowling", "28/02/1988");
+	Book *b2 = newBook("Senhor dos Aneis", "ABC", 190, "JK Rowling", "28/02/1988");
+
+	addBook(bl, b1);
+	addBook(bl, b2);
+
+	addBookClientBookList(getClientBookList(c1), b1);
+	addBookClientBookList(getClientBookList(c1), b1);
+	addBookClientBookList(getClientBookList(c1), b1);
+	
+	addBookClientBookList(getClientBookList(c2), b1);
+	addBookClientBookList(getClientBookList(c2), b1);
+	addBookClientBookList(getClientBookList(c2), b1);
+	addBookClientBookList(getClientBookList(c2), b1);
+	addBookClientBookList(getClientBookList(c2), b1);
+	
 	addClient(cl, c1);
 	addClient(cl, c2);
 	addClient(cl, c3);
-	
 
-	
 	int ans_principal;
 
 	while (1) {
@@ -35,9 +52,9 @@ int main() {
 		system("cls");
 
 		switch (ans_principal) {
-			case 1:
-				int ans1;
-				while (ans1 != 0) {
+			case 1:{
+				int ans = -1;
+				while (ans != 0) {
 				
 				printf("1 - Listar todos os clientes\n");
 				printf("2 - Consultar cliente\n");
@@ -45,9 +62,9 @@ int main() {
 				printf("4 - Remover Cliente\n");
 				printf("0 - Voltar\n");
 				
-				scanf("%d", &ans1);
+				scanf("%d", &ans);
 				
-				switch (ans1) {
+				switch (ans) {
 					case 1:
 						printAllClients(cl);
 						break;
@@ -73,7 +90,6 @@ int main() {
 						printf("Digite as seguintes informacoes do cliente.\n");
 						printf("Nome: ");
 						scanf("%[^\n]s", &nome);
-						printf("%s\n", nome);
 						while (1) {
 							printf("CPF: ");
 							scanf("%s", &cpf);
@@ -110,9 +126,7 @@ int main() {
 						while (1) {
 							printf("Sexo (Masculino-M // Feminino - F): ");
 							scanf("%c", &sexo);
-							
-							printf("%c", toupper(sexo));
-							
+														
 							if (toupper(sexo) != 'M' && toupper(sexo) != 'F') {
 								printf("Comando invalido\n");
 								continue;
@@ -138,7 +152,6 @@ int main() {
 						char cpf[11];
 						printf("Digite o cpf do cliente a ser removido: ");
 						scanf("%s", &cpf);
-						printf("%s\n", cpf);
 						
 						if (removeClient(cl, cpf))
 							printf("Cliente removido com sucesso\n");
@@ -161,10 +174,11 @@ int main() {
 				system("cls");
 			}
 				break;
+			}
 				
-			case 2:
-				int ans2;
-				while (ans2 != 0) {
+			case 2:{
+				int ans = -1;
+				while (ans != 0) {
 				
 					printf("1 - Listar todos os livros\n");
 					printf("2 - Consultar livro\n");
@@ -172,67 +186,84 @@ int main() {
 					printf("4 - Remover Livro\n");
 					printf("0 - Voltar\n");
 					
-					scanf("%d", &ans2);
+					scanf("%d", &ans);
 				
-					switch (ans2) {
+					switch (ans) {
 						case 1:
-							printAllClients(cl);
+							printAllBooks(bl);
 							break;
 					
-						case 2:{						
-							char cpf[11];
-							printf("Digite o cpf do cliente a ser consultado: ");
-							scanf("%s", &cpf);
+						case 2:{
+							getchar();
+							char title[100];
+							printf("Digite o titulo do livro a ser consultado: ");
+							scanf("%[^\n]s", &title);
 						
-							if (!getClient(cl, cpf))
-								printf("Cliente nao foi encontrado");
+							if (!getBook(bl, title))
+								printf("Livro nao foi encontrado");
 						
 							break;
 						}
 				
 						case 3:{
-							char nome[100], cpf[11], data[10];
-							int idade;
-							char sexo;
+							char title[100], publisher[100], author[100], date[100];
+							int pages;
 					
 							getchar();
 						
-							printf("Digite as seguintes informacoes do cliente.\n");
-							printf("Nome: ");
-							scanf("%[^\n]s", &nome);
-							printf("%s\n", nome);
-							printf("CPF: ");
-							scanf("%s", &cpf);
-							printf("Idade: ");
-							scanf("%d", &idade);
-							printf("Data de nascimento (dd/MM/YYYY): ");
-							scanf("%s", &data);
+							printf("Digite as seguintes informacoes do livro.\n");
+							printf("Titulo: ");
+							scanf("%[^\n]s", &title);
 							getchar();
-							printf("Sexo (Masculino-M // Feminino - F): ");
-							scanf("%c", &sexo);
+							printf("Editora: ");
+							scanf("%[^\n]s", &publisher);
+							printf("Quantidade de paginas: ");
+							scanf("%d", &pages);
+							
+							while (1) {
+							char day[10], month[2], year[4];
+							printf("Data de lancamento (dd/MM/YYYY): ");
+							scanf("%s", &date);
+							strncpy(day, date, 1);
+							strncpy(month, date + 3, 5);
+							strncpy(year, date + 6, 10);
+							
+							if (atoi(day) > 31 || atoi(day) <= 0 || atoi(month) > 12 || atoi(month) <= 0 || atoi(year) <= 0 || date[2] != '/' || date[5] != '/') {
+								printf("Data invalida\n");
+								continue;
+							}
+							
+							break;
+							
+						}
+							
+							
+							getchar();
+							printf("Autor(a): ");
+							scanf("%[^\n]s", &author);
 						
-							Client *c = newClient(nome, idade, sexo, cpf, data);
+							Book *b = newBook(title, publisher, pages, author, date);
 						
-							if (addClient(cl, c))
-								printf("Cliente adicionado com sucesso\n");
+							if (addBook(bl, b))
+								printf("Livro adicionado com sucesso\n");
 							else {
-								printf("Erro ao adicionar o cliente\n");
-								free(c);
+								printf("Erro ao adicionar o livro\n");
+								free(b);
 							}
 						
 							break;
 						}
 		
 						case 4:{
-							char cpf[11];
-							printf("Digite o cpf do cliente a ser removido: ");
-							scanf("%s", &cpf);
-							printf("%s\n", cpf);
+							getchar();
+							char title[100];
+							printf("Digite o titulo do livro a ser removido: ");
+							scanf("%[^\n]s", &title);
 						
-							if (removeClient(cl, cpf))
-								printf("Cliente removido com sucesso\n");
+							if (removeBook(bl, title))
+								printf("Livro removido com sucesso\n");
 							else
-								printf("Cliente nao foi encontrado\n");
+								printf("Livro nao foi encontrado\n");
 						
 							break;
 						}
@@ -251,6 +282,7 @@ int main() {
 					
 				}
 				break;
+			}
 				
 			case 3:
 				break;
@@ -267,4 +299,5 @@ int main() {
 				break;
 		}		
 	}
+
 }

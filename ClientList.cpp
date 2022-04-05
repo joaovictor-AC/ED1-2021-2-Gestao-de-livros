@@ -49,8 +49,13 @@ int addClient(ClientList *cl, Client *c) {
 		node_aux = node;
 		cl->head = node_aux;
 	} else {
-	while (node_aux->prox != NULL)
+	while (node_aux->prox != NULL) {
+		if (strcmp(getClientCpf(node_aux->c),getClientCpf(c)) == 0) {
+			printf("CPF ja cadastrado!\n");
+			return 0;
+		}
 		node_aux = node_aux->prox;
+	}
 	node_aux->prox = node;
 	}
 	
@@ -78,8 +83,10 @@ int removeClient(ClientList *cl, char *client_cpf) {
 	free(node_aux->c);
 	free(node_aux);
 	
+	cl->index--;
 	return 1;
 }
+
 
 int getClient(ClientList *cl,  char *client_cpf) {
 	Node *node = cl->head;
@@ -102,6 +109,9 @@ void printAllClients(ClientList *cl) {
 	while (node_aux != NULL) {
 		printf("#%d\n", i);
 		printClient(node_aux->c);
+		printf("Livros alugados: ");
+		if (!printClientBookList(getClientBookList(node_aux->c)))
+			printf("Nenhum livro alugado\n");
 		printf("\n");
 		node_aux = node_aux->prox;
 		i++;

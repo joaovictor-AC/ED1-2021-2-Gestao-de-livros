@@ -4,7 +4,6 @@
 #include "Book.h"
 
 struct b {
-	int id;
 	char *title;
 	char *publisher;
 	int pages;
@@ -13,13 +12,12 @@ struct b {
 	int reserved;
 };
 
-Book* newBook(int id, char *title, char *publisher, int pages, char *author, char *date_release) {
+Book* newBook(char *title, char *publisher, int pages, char *author, char *date_release) {
 	Book *b = (Book*) malloc(sizeof(Book));
 	if (b == NULL) {
 		printf("Erro -- Unable to allocate memory");
 		return NULL;
 	}
-	b->id = id;
 	b->title = title;
 	b->publisher = publisher;
 	b->pages = pages;
@@ -28,14 +26,6 @@ Book* newBook(int id, char *title, char *publisher, int pages, char *author, cha
 	b->reserved = 0;
 	
 	return b;
-}
-
-int getBookId(Book *b) {
-	return b->id;
-}
-
-void setBookId(Book *b, int id) {
-	b->id = id;
 }
 
 char* getBookTitle(Book *b) {
@@ -82,3 +72,15 @@ int isBookReserved(Book *b) {
 void setBookReserved(Book *b, int reserved) {
 	b->reserved = reserved;
 }
+
+int printBook(Book *b) {
+	printf("Titulo: %s\n", getBookTitle(b));
+	printf("Editora: %s\n", getBookPublisher(b));
+	printf("Paginas: %d paginas\n", getBookPages(b));
+	printf("Autor(a): %s\n", getBookAuthor(b));
+	printf("Data de lancamento: %s\n", getBookDate(b));
+	printf("Situacao: %s\n", (isBookReserved(b)) ? "Rerservado" : "Nao reservado");
+}
+
+
+

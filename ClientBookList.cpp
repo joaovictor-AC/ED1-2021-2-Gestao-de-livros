@@ -1,10 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "ClientBookList.h"
+#define MAX 5
 
 struct cbl {
 	int index;
-	Book *books[5];
+	Book *books[MAX];
 };
 
 ClientBookList* cbl_open() {
@@ -21,14 +22,14 @@ void cbl_close(ClientBookList *cbl) {
 	free(cbl);
 }
 
-int addBook(ClientBookList *cbl, Book *book) {
-	if (cbl == NULL || cbl->index == 5) return 0;
+int addBookClientBookList(ClientBookList *cbl, Book *book) {
+	if (cbl == NULL || cbl->index == MAX) return 0;
 	cbl->books[cbl->index] = book;
 	cbl->index++;
 	
 	return 1;
 }
-int removeBook(ClientBookList *cbl, int pos) {
+int removeBookClientBookList(ClientBookList *cbl, int pos) {
 	if (cbl == NULL || pos <= 0 || pos > 5 || cbl->index <= 0) return 0;
 	int i = pos-1;
 	while (i < 5) {
@@ -39,9 +40,23 @@ int removeBook(ClientBookList *cbl, int pos) {
 	return 1;
 }
 
-void print(ClientBookList *cbl) {
-	for (int i = 0; i < 5; i++) {
-		Book *b = cbl->books[i];
-		printf("%s\n", getBookTitle(b));
+int printClientBookList(ClientBookList *cbl) {
+	if (cbl->index != 0) {
+		for (int i = 0; i < cbl->index; i++) {
+			Book *b = cbl->books[i];
+			if (i == 0)
+				printf("- %s\n", getBookTitle(b));
+			else
+				printf("\t\t - %s\n", getBookTitle(b));
+				
+		}
+		printf("\n");
+		return 1;
+	} else {
+		return 0;
 	}
 }
+
+
+
+

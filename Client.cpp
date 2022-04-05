@@ -78,6 +78,8 @@ void printClient(Client *c) {
 	printf("Idade: %d anos\n", getClientAge(c));
 	printf("Sexo: %s\n", (getClienSex(c) == 'M') ? "Masculino" : "Feminino");
 	printf("Data de nascimento: %s\n", getClientDate(c));
-	// Colocar depois a lisra de livros reservados
+	printf("Livros alugados: ");
+	if (!printClientBookList(getClientBookList(c)))
+		printf("Nenhum livro alugado\n");
 }
 

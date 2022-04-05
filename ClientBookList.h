@@ -4,7 +4,7 @@ typedef struct cbl ClientBookList;
 ClientBookList* cbl_open();
 void cbl_close(ClientBookList *cbl);
 
-int addBook(ClientBookList *cbl, Book *book);
-int removeBook(ClientBookList *cbl, int pos);
+int addBookClientBookList(ClientBookList *cbl, Book *book);
+int removeBookClientBookList(ClientBookList *cbl, int pos);
 
-void print(ClientBookList *cbl);
+int printClientBookList(ClientBookList *cbl);

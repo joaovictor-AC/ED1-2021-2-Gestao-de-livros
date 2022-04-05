@@ -1,9 +1,6 @@
 typedef struct b Book;
 
-Book* newBook(int id, char *title, char *publisher, int pages, char *author, char *date_release);
-
-int getBookId(Book *b);
-void setBookId(Book *b, int id);
+Book* newBook(char *title, char *publisher, int pages, char *author, char *date_release);
 
 char* getBookTitle(Book *b);
 void setBookTitle(Book *b, char *title);
@@ -22,3 +19,5 @@ void setBookDate(Book *b, char *date_realease);
 
 int isBookReserved(Book *b);
 void setBookReserved(Book *b, int reserved);
+
+int printBook(Book *b);
