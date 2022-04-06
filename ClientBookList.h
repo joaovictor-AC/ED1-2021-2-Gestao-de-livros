@@ -7,4 +7,7 @@ void cbl_close(ClientBookList *cbl);
 int addBookClientBookList(ClientBookList *cbl, Book *book);
 int removeBookClientBookList(ClientBookList *cbl, int pos);
 
+int cbl_len(ClientBookList *cbl);
+Book* getBookClientBookList(ClientBookList *cbl, int pos);
+
 int printClientBookList(ClientBookList *cbl);

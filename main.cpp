@@ -8,6 +8,7 @@
 #include "ClientBookList.h"
 #include "ClientList.h"
 #include "BookList.h"
+#include "ReservationList.h"
 
 int main() {
 	Client *c1 = newClient("Joao", 19, 'M', "70249281155", "28/04/2002");
@@ -19,23 +20,30 @@ int main() {
 
 	Book *b1 = newBook("Harry Potter", "ABC", 190, "JK Rowling", "28/02/1988");
 	Book *b2 = newBook("Senhor dos Aneis", "ABC", 190, "JK Rowling", "28/02/1988");
+	Book *b3 = newBook("Diario de um banana", "ABC", 190, "JK Rowling", "28/02/1988");
+	Book *b4 = newBook("Sangue de tinta", "ABC", 190, "JK Rowling", "28/02/1988");
+	Book *b5 = newBook("Primo rico e primo pobre", "ABC", 190, "JK Rowling", "28/02/1988");
+	Book *b6 = newBook("Divina comedia", "ABC", 190, "JK Rowling", "28/02/1988");
 
 	addBook(bl, b1);
 	addBook(bl, b2);
+	addBook(bl, b3);
+	addBook(bl, b4);
+	addBook(bl, b5);
+	addBook(bl, b6);
 
 	addBookClientBookList(getClientBookList(c1), b1);
-	addBookClientBookList(getClientBookList(c1), b1);
-	addBookClientBookList(getClientBookList(c1), b1);
+	addBookClientBookList(getClientBookList(c1), b2);
+	addBookClientBookList(getClientBookList(c1), b3);
+	addBookClientBookList(getClientBookList(c1), b4);
+	addBookClientBookList(getClientBookList(c1), b5);
 	
-	addBookClientBookList(getClientBookList(c2), b1);
-	addBookClientBookList(getClientBookList(c2), b1);
-	addBookClientBookList(getClientBookList(c2), b1);
-	addBookClientBookList(getClientBookList(c2), b1);
-	addBookClientBookList(getClientBookList(c2), b1);
 	
 	addClient(cl, c1);
 	addClient(cl, c2);
 	addClient(cl, c3);
+	
+	ReservationList *rl = rl_open();
 
 	int ans_principal;
 
@@ -45,7 +53,6 @@ int main() {
 		printf("1 - Lista de clientes\n");
 		printf("2 - Lista de livros\n");
 		printf("3 - Lista de reservas\n");
-		printf("4 - Receber livro\n");
 		printf("0 - Sair\n");
 	
 		scanf("%d", &ans_principal);
@@ -74,9 +81,12 @@ int main() {
 						printf("Digite o cpf do cliente a ser consultado: ");
 						scanf("%s", &cpf);
 						
-						if (!getClient(cl, cpf))
-							printf("Cliente nao foi encontrado");
+						Client *c = getClient(cl, cpf);
 						
+						if (c == NULL)
+							printf("Cliente nao foi encontrado");
+						else
+							printClient(c);
 						break;
 					}
 				
@@ -199,9 +209,13 @@ int main() {
 							printf("Digite o titulo do livro a ser consultado: ");
 							scanf("%[^\n]s", &title);
 						
-							if (!getBook(bl, title))
-								printf("Livro nao foi encontrado");
+							Book *b = getBook(bl, title);
 						
+							if (b == NULL)
+								printf("Livro nao foi encontrado\n");
+							else
+								printBook(b);
+							
 							break;
 						}
 				
@@ -284,11 +298,112 @@ int main() {
 				break;
 			}
 				
-			case 3:
-				break;
+			case 3:{
+				int ans = -1;
+				while (ans != 0) {
 				
-			case 4:
+					printf("1 - Listar todas as reservas\n");
+					printf("2 - Consultar reserva\n");
+					printf("3 - Adicionar reserva\n");
+					printf("4 - Remover reserva\n");
+					printf("0 - Voltar\n");
+					
+					scanf("%d", &ans);
+				
+					switch (ans) {
+						case 1:
+							printAllReservations(rl);
+							break;
+					
+						case 2:{
+							getchar();
+							char title[100];
+							printf("Digite o titulo do livro que foi reservado: ");
+							scanf("%[^\n]s", &title);
+						
+							if (!getBook(bl, title))
+								printf("Livro nao foi encontrado");
+						
+							break;
+						}
+				
+						case 3:{
+							Client *c;
+							Book *b;
+							
+							char client_cpf[100], book_title[100];
+							
+							printf("Digite as seguintes informacoes da reserva.\n");
+							
+							while (1) {
+								getchar();
+								printf("CPF do cliente: ");
+								scanf("%[^\n]s", &client_cpf);
+								c = getClient(cl, client_cpf);
+								if (c == NULL) {	
+									printf("Cliente nao encontrado\n");
+									continue;
+								}
+								break;
+							}
+							
+							
+							while (1) {
+								
+								getchar();
+							
+								printf("Nome do livro: ");
+								scanf("%[^\n]s", &book_title);
+								b = getBook(bl, book_title);
+								if (b == NULL) {
+									printf("Livro nao encontrado\n");
+									continue;
+								}
+								break;
+							}
+							
+							
+							
+							Reservation *r = newReservation("28/04/2002", c, b);
+							
+							if (!addReservation(rl, r))
+								printf("Erro ao adicionar a reserva\n");
+							else
+								printf("Reserva adicionado com sucesso\n");
+							
+							break;
+							
+						}
+		
+						case 4:{
+							getchar();
+							char title[100];
+							printf("Digite o titulo do livro a ser removido: ");
+							scanf("%[^\n]s", &title);
+						
+							if (removeBook(bl, title))
+								printf("Livro removido com sucesso\n");
+							else
+								printf("Livro nao foi encontrado\n");
+						
+							break;
+						}
+					
+						case 0:
+							printf("Voltando para menu principal!\n");
+						break;
+				
+						default:
+							printf("Comando invalido\n");
+							break;
+					}
+				
+					system("pause");
+					system("cls");
+					
+				}
 				break;
+			}
 				
 			case 0:
 				printf("Programa finalizado");

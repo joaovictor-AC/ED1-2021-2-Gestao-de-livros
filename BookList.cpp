@@ -90,18 +90,13 @@ int removeBook(BookList *bl, char *book_title) {
 }
 
 
-int getBook(BookList *bl, char *book_title) {
+Book* getBook(BookList *bl, char *book_title) {
 	Node *node = bl->head;
 			
 	while (node != NULL && strcmp(book_title, getBookTitle(node->b)) != 0)
 		node = node->prox;
-				
-	if (node == NULL)
-		return 0;
-	else
-		printBook(node->b);
-	
-	return 1;
+			
+	return (node == NULL) ? NULL : node->b;
 	
 }
 

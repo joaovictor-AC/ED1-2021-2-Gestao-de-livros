@@ -24,6 +24,7 @@ void cbl_close(ClientBookList *cbl) {
 
 int addBookClientBookList(ClientBookList *cbl, Book *book) {
 	if (cbl == NULL || cbl->index == MAX) return 0;
+	setBookReserved(book, 1);
 	cbl->books[cbl->index] = book;
 	cbl->index++;
 	
@@ -37,7 +38,16 @@ int removeBookClientBookList(ClientBookList *cbl, int pos) {
 		i++;
 	}
 	
+	cbl->index--;
 	return 1;
+}
+
+int cbl_len(ClientBookList *cbl) {
+	return cbl->index;
+}
+
+Book* getBookClientBookList(ClientBookList *cbl, int pos) {
+	return cbl->books[pos-1];
 }
 
 int printClientBookList(ClientBookList *cbl) {

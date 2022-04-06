@@ -88,18 +88,13 @@ int removeClient(ClientList *cl, char *client_cpf) {
 }
 
 
-int getClient(ClientList *cl,  char *client_cpf) {
+Client* getClient(ClientList *cl,  char *client_cpf) {
 	Node *node = cl->head;
 			
 	while (node != NULL && strcmp(client_cpf, getClientCpf(node->c)) != 0)
 		node = node->prox;
-				
-	if (node == NULL)
-		return 0;
-	else
-		printClient(node->c);
 	
-	return 1;
+	return (node == NULL) ? NULL : node->c;
 	
 }
 
@@ -109,9 +104,6 @@ void printAllClients(ClientList *cl) {
 	while (node_aux != NULL) {
 		printf("#%d\n", i);
 		printClient(node_aux->c);
-		printf("Livros alugados: ");
-		if (!printClientBookList(getClientBookList(node_aux->c)))
-			printf("Nenhum livro alugado\n");
 		printf("\n");
 		node_aux = node_aux->prox;
 		i++;
