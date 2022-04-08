@@ -10,6 +10,181 @@
 #include "BookList.h"
 #include "ReservationList.h"
 
+int validDate(int dd, int mm, int yy) {
+	if(yy>=1900 && yy<=9999) {
+        if(mm>=1 && mm<=12) {
+            if((dd>=1 && dd<=31) && (mm==1 || mm==3 || mm==5 || mm==7 || mm==8 || mm==10 || mm==12))
+                return 1;
+            else if((dd>=1 && dd<=30) && (mm==4 || mm==6 || mm==9 || mm==11))
+                return 1;
+            else if((dd>=1 && dd<=28) && (mm==2))
+                return 1;
+            else if(dd==29 && mm==2 && (yy%400==0 ||(yy%4==0 && yy%100!=0)))
+                return 1;
+            else {
+                printf("Dia invalido.\n");
+            	return 0;
+			}
+        }
+        else {
+            printf("Mes invalido.\n");
+            return 0;
+        }
+    }
+    else {
+        printf("Ano invalido.\n");
+        return 0;
+    }
+}
+Client *createClient() {					
+	getchar();
+	char *nome = (char*) malloc(sizeof(char));
+	char *cpf = (char*) malloc(sizeof(char));
+	char *data = (char*) malloc(sizeof(char));
+	int idade;
+	char sexo;
+	
+	printf("Digite as seguintes informacoes do cliente.\n");
+	printf("Nome: ");
+	scanf("%[^\n]s", nome);
+	while (1) {
+		printf("CPF: ");
+		scanf("%s", cpf);
+							
+		if (strlen(cpf) != 11) {
+			printf("CPF invalido\n");
+			continue;
+		}
+							
+		break;					
+	}
+	
+	printf("Idade: ");
+	scanf("%d", &idade);
+	while (1) {
+		char day[10], month[2], year[4];
+		printf("Data de nascimento (dd/MM/YYYY): ");
+		scanf("%s", data);
+		strncpy(day, data, 2);
+		strncpy(month, data + 3, 5);
+		strncpy(year, data + 6, 10);
+		
+		if (!validDate(atoi(day), atoi(month), atoi(year)) || data[2] != '/' || data[5] != '/') {
+			printf("Data invalida\n");
+			continue;
+		}
+					
+		break;
+							
+	}
+						
+	getchar();
+						
+	while (1) {
+		printf("Sexo (Masculino-M // Feminino - F): ");
+		scanf("%c", &sexo);
+														
+		if (toupper(sexo) != 'M' && toupper(sexo) != 'F') {
+			printf("Comando invalido\n");
+			continue;
+		}
+							
+		break;
+							
+	}
+						
+	Client *c = newClient(nome, idade, sexo, cpf, data);
+				
+	return c;
+}
+Book *createBook() {
+	
+	int pages;
+	char *title = (char*) malloc(sizeof(char));
+	char *publisher = (char*) malloc(sizeof(char));
+	char *author = (char*) malloc(sizeof(char));
+	char *date = (char*) malloc(sizeof(char));
+					
+	getchar();
+						
+	printf("Digite as seguintes informacoes do livro.\n");
+	printf("Titulo: ");
+	scanf("%[^\n]s", title);
+	getchar();
+	printf("Editora: ");
+	scanf("%[^\n]s", publisher);
+	printf("Quantidade de paginas: ");
+	scanf("%d", &pages);
+							
+	while (1) {
+		char day[10], month[2], year[4];
+		printf("Data de lancamento (dd/MM/YYYY): ");
+		scanf("%s", date);
+		strncpy(day, date, 2);
+		strncpy(month, date + 3, 5);
+		strncpy(year, date + 6, 10);
+							
+		if (!validDate(atoi(day), atoi(month), atoi(year)) || date[2] != '/' || date[5] != '/') {
+			printf("Data invalida\n");
+			continue;
+		}
+							
+		break;
+							
+	}
+							
+							
+	getchar();
+	printf("Autor(a): ");
+	scanf("%[^\n]s", author);
+						
+	Book *b = newBook(title, publisher, pages, author, date);
+	
+	return b;
+	
+}
+Reservation *createReservation(ClientList *cl, BookList *bl) {
+	Client *c;
+	Book *b;
+							
+	char client_cpf[100], book_title[100];
+							
+	printf("Digite as seguintes informacoes da reserva.\n");
+							
+	while (1) {
+		getchar();
+		printf("CPF do cliente: ");
+		scanf("%[^\n]s", &client_cpf);
+		c = getClient(cl, client_cpf);
+		if (c == NULL) {	
+		printf("Cliente nao encontrado\n");
+		continue;
+		}
+	
+		break;
+	}
+							
+							
+	while (1) {
+								
+		getchar();
+							
+		printf("Nome do livro: ");
+		scanf("%[^\n]s", &book_title);
+		b = getBook(bl, book_title);
+		if (b == NULL) {
+			printf("Livro nao encontrado\n");
+			continue;
+		}
+		
+		break;
+	}
+	
+	Reservation *r = newReservation(c, b);
+	
+	return r;
+}
+
 int main() {
 	Client *c1 = newClient("Joao", 19, 'M', "70249281155", "28/04/2002");
 	Client *c2 = newClient("Matheus", 19, 'M', "70249281154", "28/04/2002");
@@ -28,23 +203,30 @@ int main() {
 	addBook(bl, b1);
 	addBook(bl, b2);
 	addBook(bl, b3);
-	addBook(bl, b4);
-	addBook(bl, b5);
-	addBook(bl, b6);
+//	addBook(bl, b4);
+//	addBook(bl, b5);
+//	addBook(bl, b6);
 
-	addBookClientBookList(getClientBookList(c1), b1);
-	addBookClientBookList(getClientBookList(c1), b2);
-	addBookClientBookList(getClientBookList(c1), b3);
-	addBookClientBookList(getClientBookList(c1), b4);
-	addBookClientBookList(getClientBookList(c1), b5);
+//	addBookClientBookList(getClientBookList(c1), b1);
+//	addBookClientBookList(getClientBookList(c1), b2);
+//	addBookClientBookList(getClientBookList(c1), b3);
+//	addBookClientBookList(getClientBookList(c1), b4);
+//	addBookClientBookList(getClientBookList(c1), b5);
 	
-	
+//	
 	addClient(cl, c1);
 	addClient(cl, c2);
 	addClient(cl, c3);
 	
 	ReservationList *rl = rl_open();
-
+ 	Reservation *r1 = newReservation(c1, b1);
+ 	Reservation *r2 = newReservation(c1, b2);
+ 	Reservation *r3 = newReservation(c1, b3);
+ 	
+ 	addReservation(rl, r1);
+ 	addReservation(rl, r2);
+ 	addReservation(rl, r3);
+ 
 	int ans_principal;
 
 	while (1) {
@@ -84,75 +266,21 @@ int main() {
 						Client *c = getClient(cl, cpf);
 						
 						if (c == NULL)
-							printf("Cliente nao foi encontrado");
+							printf("Cliente nao foi encontrado\n");
 						else
 							printClient(c);
 						break;
 					}
 				
 					case 3:{
-						char nome[100], cpf[11], data[10];
-						int idade;
-						char sexo;
-					
-						getchar();
+
+						Client *c = createClient();
 						
-						printf("Digite as seguintes informacoes do cliente.\n");
-						printf("Nome: ");
-						scanf("%[^\n]s", &nome);
-						while (1) {
-							printf("CPF: ");
-							scanf("%s", &cpf);
-							
-							if (strlen(cpf) != 11) {
-								printf("CPF invalido\n");
-								continue;
-							}
-							
-							break;
-							
-						}
-						printf("Idade: ");
-						scanf("%d", &idade);
-						while (1) {
-							char day[10], month[2], year[4];
-							printf("Data de nascimento (dd/MM/YYYY): ");
-							scanf("%s", &data);
-							strncpy(day, data, 1);
-							strncpy(month, data + 3, 5);
-							strncpy(year, data + 6, 10);
-							
-							if (atoi(day) > 31 || atoi(day) <= 0 || atoi(month) > 12 || atoi(month) <= 0 || atoi(year) <= 0 || data[2] != '/' || data[5] != '/') {
-								printf("Data invalida\n");
-								continue;
-							}
-							
-							break;
-							
-						}
-						
-						getchar();
-						
-						while (1) {
-							printf("Sexo (Masculino-M // Feminino - F): ");
-							scanf("%c", &sexo);
-														
-							if (toupper(sexo) != 'M' && toupper(sexo) != 'F') {
-								printf("Comando invalido\n");
-								continue;
-							}
-							
-							break;
-							
-						}
-						
-						Client *c = newClient(nome, idade, sexo, cpf, data);
-						
-						if (addClient(cl, c))
-							printf("Cliente adicionado com sucesso\n");
-						else {
+						if (!addClient(cl, c)) {
 							printf("Erro ao adicionar o cliente\n");
 							free(c);
+						} else {
+							printf("Cliente adicionado com sucesso\n");
 						}
 						
 						break;
@@ -220,44 +348,9 @@ int main() {
 						}
 				
 						case 3:{
-							char title[100], publisher[100], author[100], date[100];
-							int pages;
-					
-							getchar();
-						
-							printf("Digite as seguintes informacoes do livro.\n");
-							printf("Titulo: ");
-							scanf("%[^\n]s", &title);
-							getchar();
-							printf("Editora: ");
-							scanf("%[^\n]s", &publisher);
-							printf("Quantidade de paginas: ");
-							scanf("%d", &pages);
 							
-							while (1) {
-							char day[10], month[2], year[4];
-							printf("Data de lancamento (dd/MM/YYYY): ");
-							scanf("%s", &date);
-							strncpy(day, date, 1);
-							strncpy(month, date + 3, 5);
-							strncpy(year, date + 6, 10);
+							Book *b = createBook();
 							
-							if (atoi(day) > 31 || atoi(day) <= 0 || atoi(month) > 12 || atoi(month) <= 0 || atoi(year) <= 0 || date[2] != '/' || date[5] != '/') {
-								printf("Data invalida\n");
-								continue;
-							}
-							
-							break;
-							
-						}
-							
-							
-							getchar();
-							printf("Autor(a): ");
-							scanf("%[^\n]s", &author);
-						
-							Book *b = newBook(title, publisher, pages, author, date);
-						
 							if (addBook(bl, b))
 								printf("Livro adicionado com sucesso\n");
 							else {
@@ -317,55 +410,44 @@ int main() {
 					
 						case 2:{
 							getchar();
+							
+							char cpf[11];
 							char title[100];
-							printf("Digite o titulo do livro que foi reservado: ");
-							scanf("%[^\n]s", &title);
-						
-							if (!getBook(bl, title))
-								printf("Livro nao foi encontrado");
-						
+							
+							printf("Digite o cpf do cliente: ");
+							scanf("%s", cpf);
+							
+							getchar();
+							
+							printf("Digite o nome do livro: ");
+							scanf("%[^\n]s", title);
+							
+							Client *c = getClient(cl, cpf);
+							Book *b = getBook(bl, title);
+							
+							if (c == NULL) {
+								printf("Cliente nao encontrado\n");
+								break;
+							} else if (b == NULL) {
+								printf("Livro nao encontrado\n");
+								break;
+							}
+							
+							Reservation *r = getReservation(rl, c, b);
+							
+							if (r == NULL)
+								printf("Reserva nao encontrada\n");
+							else {
+								printf("\n");	
+								printReservation(r);
+							}
 							break;
 						}
 				
 						case 3:{
-							Client *c;
-							Book *b;
 							
-							char client_cpf[100], book_title[100];
-							
-							printf("Digite as seguintes informacoes da reserva.\n");
-							
-							while (1) {
-								getchar();
-								printf("CPF do cliente: ");
-								scanf("%[^\n]s", &client_cpf);
-								c = getClient(cl, client_cpf);
-								if (c == NULL) {	
-									printf("Cliente nao encontrado\n");
-									continue;
-								}
-								break;
-							}
-							
-							
-							while (1) {
-								
-								getchar();
-							
-								printf("Nome do livro: ");
-								scanf("%[^\n]s", &book_title);
-								b = getBook(bl, book_title);
-								if (b == NULL) {
-									printf("Livro nao encontrado\n");
-									continue;
-								}
-								break;
-							}
-							
-							
-							
-							Reservation *r = newReservation("28/04/2002", c, b);
-							
+							Reservation *r = createReservation(cl, bl);
+							 
 							if (!addReservation(rl, r))
 								printf("Erro ao adicionar a reserva\n");
 							else
@@ -377,16 +459,24 @@ int main() {
 		
 						case 4:{
 							getchar();
-							char title[100];
-							printf("Digite o titulo do livro a ser removido: ");
-							scanf("%[^\n]s", &title);
-						
-							if (removeBook(bl, title))
-								printf("Livro removido com sucesso\n");
+							
+							char cpf[100];
+							
+							printf("Digite o cpf do cliente: ");
+							scanf("%[^\n]s", cpf);
+							
+							Client *c = getClient(cl, cpf);
+							
+							if (c == NULL) {
+								printf("Cliente nao encontrado\n");
+								break;
+							}
+							
+							if(!removeReservation(rl, c))
+								printf("Erro ao remover reserva\n");
 							else
-								printf("Livro nao foi encontrado\n");
-						
-							break;
+								printf("Reserva removida com sucesso\n");
+							
 						}
 					
 						case 0:

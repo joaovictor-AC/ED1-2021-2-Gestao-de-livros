@@ -39,7 +39,7 @@ void cl_close(ClientList *cl) {
 
 int addClient(ClientList *cl, Client *c) {
 	if (cl == NULL) return 0;
-	Node *node_aux = cl->head;
+	Node *node_ant, *node_aux = cl->head;
 	
 	Node *node = (Node*) malloc(sizeof(Node));
 	node->c = c;
@@ -49,14 +49,15 @@ int addClient(ClientList *cl, Client *c) {
 		node_aux = node;
 		cl->head = node_aux;
 	} else {
-	while (node_aux->prox != NULL) {
+	while (node_aux != NULL) {
 		if (strcmp(getClientCpf(node_aux->c),getClientCpf(c)) == 0) {
 			printf("CPF ja cadastrado!\n");
 			return 0;
 		}
+		node_ant = node_aux;
 		node_aux = node_aux->prox;
 	}
-	node_aux->prox = node;
+	node_ant->prox = node;
 	}
 	
 	cl->index++;
