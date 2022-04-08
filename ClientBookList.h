@@ -1,4 +1,5 @@
 #include "Book.h"
+
 typedef struct cbl ClientBookList;
 
 ClientBookList* cbl_open();

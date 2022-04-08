@@ -10,6 +10,7 @@
 #include "BookList.h"
 #include "ReservationList.h"
 
+// Validação de data
 int validDate(int dd, int mm, int yy) {
 	if(yy>=1900 && yy<=9999) {
         if(mm>=1 && mm<=12) {
@@ -36,6 +37,8 @@ int validDate(int dd, int mm, int yy) {
         return 0;
     }
 }
+
+// Criar cliente
 Client *createClient() {					
 	getchar();
 	char *nome = (char*) malloc(sizeof(char));
@@ -97,6 +100,8 @@ Client *createClient() {
 				
 	return c;
 }
+
+// Criar livro
 Book *createBook() {
 	
 	int pages;
@@ -143,6 +148,8 @@ Book *createBook() {
 	return b;
 	
 }
+
+// Criar reserva
 Reservation *createReservation(ClientList *cl, BookList *bl) {
 	Client *c;
 	Book *b;
@@ -186,12 +193,20 @@ Reservation *createReservation(ClientList *cl, BookList *bl) {
 }
 
 int main() {
+	
+	// Criando listas
+	
+	ClientList *cl = cl_open();
+	BookList *bl = bl_open();
+	ReservationList *rl = rl_open();
+	
+	
+	// Cliente, livros e reservas já cadastradas
+	
 	Client *c1 = newClient("Joao", 19, 'M', "70249281155", "28/04/2002");
 	Client *c2 = newClient("Matheus", 19, 'M', "70249281154", "28/04/2002");
 	Client *c3 = newClient("Joana", 19, 'M', "70249281153", "28/04/2002");
-	ClientList *cl = cl_open();
 
-	BookList *bl = bl_open();
 
 	Book *b1 = newBook("Harry Potter", "ABC", 190, "JK Rowling", "28/02/1988");
 	Book *b2 = newBook("Senhor dos Aneis", "ABC", 190, "JK Rowling", "28/02/1988");
@@ -203,29 +218,25 @@ int main() {
 	addBook(bl, b1);
 	addBook(bl, b2);
 	addBook(bl, b3);
-//	addBook(bl, b4);
-//	addBook(bl, b5);
-//	addBook(bl, b6);
-
-//	addBookClientBookList(getClientBookList(c1), b1);
-//	addBookClientBookList(getClientBookList(c1), b2);
-//	addBookClientBookList(getClientBookList(c1), b3);
-//	addBookClientBookList(getClientBookList(c1), b4);
-//	addBookClientBookList(getClientBookList(c1), b5);
+	addBook(bl, b4);
+	addBook(bl, b5);
+	addBook(bl, b6);
 	
-//	
 	addClient(cl, c1);
 	addClient(cl, c2);
 	addClient(cl, c3);
-	
-	ReservationList *rl = rl_open();
+		
  	Reservation *r1 = newReservation(c1, b1);
  	Reservation *r2 = newReservation(c1, b2);
  	Reservation *r3 = newReservation(c1, b3);
+ 	Reservation *r4 = newReservation(c1, b4);
+ 	Reservation *r5 = newReservation(c1, b5);
  	
  	addReservation(rl, r1);
  	addReservation(rl, r2);
  	addReservation(rl, r3);
+ 	addReservation(rl, r4);
+ 	addReservation(rl, r5);
  
 	int ans_principal;
 
@@ -254,10 +265,12 @@ int main() {
 				scanf("%d", &ans);
 				
 				switch (ans) {
+					// Imprimir todos os clientes na lista
 					case 1:
 						printAllClients(cl);
 						break;
 					
+					// Procurar um cliente na nossa lista
 					case 2:{						
 						char cpf[11];
 						printf("Digite o cpf do cliente a ser consultado: ");
@@ -272,6 +285,7 @@ int main() {
 						break;
 					}
 				
+					// Adicionar um cliente na nossa lista
 					case 3:{
 
 						Client *c = createClient();
@@ -286,12 +300,13 @@ int main() {
 						break;
 					}
 		
+					// Remover um cliente na nossa lista
 					case 4:{
 						char cpf[11];
 						printf("Digite o cpf do cliente a ser removido: ");
 						scanf("%s", &cpf);
 						
-						if (removeClient(cl, cpf))
+						if (removeClient(cl, cpf, rl))
 							printf("Cliente removido com sucesso\n");
 						else
 							printf("Cliente nao foi encontrado\n");
@@ -299,10 +314,13 @@ int main() {
 						break;
 					}
 					
+					// Voltar para o menu principal
 					case 0:
 						printf("Voltando para menu principal!\n");
 					break;
 				
+				
+					// O usuário digitou um comando invalido
 					default:
 						printf("Comando invalido\n");
 						break;
@@ -327,10 +345,12 @@ int main() {
 					scanf("%d", &ans);
 				
 					switch (ans) {
+						// Imprimir todos os livros da nossa lista
 						case 1:
 							printAllBooks(bl);
 							break;
 					
+						// Procurar um livro da nossa lista
 						case 2:{
 							getchar();
 							char title[100];
@@ -347,6 +367,7 @@ int main() {
 							break;
 						}
 				
+						// Adicionar um livro na nossa lista
 						case 3:{
 							
 							Book *b = createBook();
@@ -361,13 +382,14 @@ int main() {
 							break;
 						}
 		
+						// Remover um livro da nossa lista
 						case 4:{
 							getchar();
 							char title[100];
 							printf("Digite o titulo do livro a ser removido: ");
 							scanf("%[^\n]s", &title);
 						
-							if (removeBook(bl, title))
+							if (removeBook(bl, title, rl))
 								printf("Livro removido com sucesso\n");
 							else
 								printf("Livro nao foi encontrado\n");
@@ -375,10 +397,12 @@ int main() {
 							break;
 						}
 					
+						// Voltar para o menu principal
 						case 0:
 							printf("Voltando para menu principal!\n");
 						break;
 				
+						//O usuário digitou um comando invalido
 						default:
 							printf("Comando invalido\n");
 							break;
@@ -404,10 +428,13 @@ int main() {
 					scanf("%d", &ans);
 				
 					switch (ans) {
+						
+						// Imprimir todas as reservas da nossa lista
 						case 1:
 							printAllReservations(rl);
 							break;
 					
+						// Procurar uma reserva na nossa lista
 						case 2:{
 							getchar();
 							
@@ -433,7 +460,7 @@ int main() {
 								break;
 							}
 							
-							Reservation *r = getReservation(rl, c, b);
+							Reservation *r = getReservation(rl, b);
 							
 							if (r == NULL)
 								printf("Reserva nao encontrada\n");
@@ -444,6 +471,7 @@ int main() {
 							break;
 						}
 				
+						// Adicionar uma reserva na nossa lista
 						case 3:{
 							
 							Reservation *r = createReservation(cl, bl);
@@ -457,6 +485,7 @@ int main() {
 							
 						}
 		
+						// Remover uma reserva na nossa lista
 						case 4:{
 							getchar();
 							
@@ -472,17 +501,39 @@ int main() {
 								break;
 							}
 							
-							if(!removeReservation(rl, c))
+								
+							int ans;
+							printf("Qual livro vai ser devolvido: ");
+							printf("\n");
+							
+							int i = 0;
+							
+							if (cbl_len(getClientBookList(c)) > 0) {
+								
+								while (i < cbl_len(getClientBookList(c))) {
+									printf("%d - %s\n", i+1, getBookTitle(getBookClientBookList(getClientBookList(c), i+1)));
+									i++;
+								}
+								
+								scanf("%d", &ans);
+							} else {
+								printf("Lista vazia\n");
+								break;
+							}
+							
+							if(!removeReservation(rl, c, ans))
 								printf("Erro ao remover reserva\n");
 							else
 								printf("Reserva removida com sucesso\n");
 							
 						}
-					
+						
+						// Voltar para o menu principal
 						case 0:
 							printf("Voltando para menu principal!\n");
 						break;
 				
+						// O usuário digitou um comando invalido
 						default:
 							printf("Comando invalido\n");
 							break;
@@ -494,9 +545,14 @@ int main() {
 				}
 				break;
 			}
-				
+			
+			// Fechar o programa
 			case 0:
 				printf("Programa finalizado");
+				cl_close(cl);
+				rl_close(rl);
+				bl_close(cl);
+				
 				exit(0);
 				break;
 				

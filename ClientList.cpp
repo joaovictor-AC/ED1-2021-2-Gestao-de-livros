@@ -64,7 +64,7 @@ int addClient(ClientList *cl, Client *c) {
 	return 1;
 }
 
-int removeClient(ClientList *cl, char *client_cpf) {
+int removeClient(ClientList *cl, char *client_cpf, ReservationList *rl) {
 	if (cl == NULL || cl->head == NULL) return 0;
 	Node *node_ant, *node_aux = cl->head;
 	
@@ -80,6 +80,15 @@ int removeClient(ClientList *cl, char *client_cpf) {
 		cl->head = node_aux->prox;
 	else
 		node_ant->prox = node_aux->prox;
+	
+	ClientBookList *cbl = getClientBookList(node_aux->c);
+	
+	if ( cbl_len(cbl) > 0 ) {
+		int i = 1;
+		while (cbl_len(cbl) > 0)
+			removeReservation(rl, node_aux->c, i);
+	}
+	
 	
 	free(node_aux->c);
 	free(node_aux);

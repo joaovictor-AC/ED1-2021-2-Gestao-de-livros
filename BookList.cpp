@@ -65,7 +65,7 @@ int addBook(BookList *bl, Book *b) {
 
 }
 
-int removeBook(BookList *bl, char *book_title) {
+int removeBook(BookList *bl, char *book_title, ReservationList *rl) {
 	if (bl == NULL || bl->head == NULL) return 0;
 	Node *node_ant, *node_aux = bl->head;
 	
@@ -82,6 +82,19 @@ int removeBook(BookList *bl, char *book_title) {
 	else
 		node_ant->prox = node_aux->prox;
 	
+	Reservation *r = getReservation(rl, node_aux->b);
+	
+	if (r != NULL) {
+		Client *c = getReservationClient(getReservation(rl, node_aux->b));
+		ClientBookList *cbl = getClientBookList(c);
+		int i = 1;
+		while ( node_aux->b != getBookClientBookList(cbl, i) )
+			i++;
+		
+		removeReservation(rl, c, i);
+		
+	}
+
 	free(node_aux->b);
 	free(node_aux);
 	

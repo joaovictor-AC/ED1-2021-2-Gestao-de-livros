@@ -69,23 +69,9 @@ int addReservation(ReservationList *rl, Reservation *r) {
 	return 1;
 }
 
-int removeReservation(ReservationList *rl, Client *c) {
+int removeReservation(ReservationList *rl, Client *c, int ans) {
 	if (rl == NULL || rl->head == NULL || cbl_len(getClientBookList(c)) == 0) return 0;
 	Node *node_ant, *node_aux = rl->head;
-	
-	int ans;
-	printf("Qual livro vai ser devolvido: ");
-	printf("\n");
-	int i = 0;
-
-	ClientBookList *cbl = getClientBookList(c);
-	
-	while (i < cbl_len(cbl)) {
-		printf("%d - %s\n", i+1, getBookTitle(getBookClientBookList(cbl, i+1)));
-		i++;
-	}
-	scanf("%d", &ans);
-
 	
 	while (node_aux != NULL && getReservationBook(node_aux->r) != getBookClientBookList(getClientBookList(c), ans)) {
 		node_ant = node_aux;	
@@ -109,13 +95,13 @@ int removeReservation(ReservationList *rl, Client *c) {
 	rl->index--;
 	return 1;
 }
-Reservation *getReservation(ReservationList *rl, Client *c, Book *b) {
+Reservation *getReservation(ReservationList *rl, Book *b) {
 	Node *node = rl->head;
 
 	while (node != NULL && getReservationBook(node->r) != b)
 		node = node->prox;
 		
-	return node->r;
+	return (node == NULL) ? NULL : node->r;
 }
 
 void printAllReservations(ReservationList *rl) {
